@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrganizationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
@@ -21,6 +23,17 @@ class Organization
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    /**
+     * @var Collection<int, Conference>
+     */
+    #[ORM\ManyToMany(targetEntity: Conference::class, mappedBy: 'organizations')]
+    private Collection $conferences;
+
+    public function __construct()
+    {
+        $this->conferences = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +72,33 @@ class Organization
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conference>
+     */
+    public function getConferences(): Collection
+    {
+        return $this->conferences;
+    }
+
+    public function addConference(Conference $conference): static
+    {
+        if (!$this->conferences->contains($conference)) {
+            $this->conferences->add($conference);
+            $conference->addOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConference(Conference $conference): static
+    {
+        if ($this->conferences->removeElement($conference)) {
+            $conference->removeOrganization($this);
+        }
 
         return $this;
     }
