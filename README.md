@@ -8,4 +8,12 @@ $ git clone https://github.com/adrienroches-sensio/sf7pack.2026.01.12.git
 $ cd ./sf7pack.2026.01.12
 $ symfony composer install
 $ symfony console doctrine:migration:migrate --allow-no-migration --no-interaction
+$ symfony console doctrine:fixtures:load --no-interaction
+$ symfony serve
 ```
+
+## Log in
+
+| username | password | roles      |
+|----------|----------|------------|
+| admin    | admin    | ROLE_ADMIN |
