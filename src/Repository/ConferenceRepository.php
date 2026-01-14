@@ -45,7 +45,17 @@ class ConferenceRepository extends ServiceEntityRepository implements Conference
 
     public function listAll(): array
     {
-        return $this->findAll();
+        $qb = $this->createQueryBuilder('conference');
+
+        $qb
+            ->leftJoin('conference.organizations', 'organization')
+            ->addSelect('organization')
+
+            ->leftJoin('conference.volunteerings', 'volunteering')
+            ->addSelect('volunteering')
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
     //    /**
