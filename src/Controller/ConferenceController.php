@@ -36,7 +36,7 @@ class ConferenceController extends AbstractController
         }
 
         return $this->render('conference/new.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
