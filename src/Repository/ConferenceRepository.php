@@ -11,18 +11,13 @@ use InvalidArgumentException;
 /**
  * @extends ServiceEntityRepository<Conference>
  */
-class ConferenceRepository extends ServiceEntityRepository
+class ConferenceRepository extends ServiceEntityRepository implements ConferenceRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Conference::class);
     }
 
-    /**
-     * @return list<Conference>
-     *
-     * @throws InvalidArgumentException When both $start and $end are null. (At least one must be provided)
-     */
     public function searchBetweenDates(DateTimeImmutable|null $start, DateTimeImmutable|null $end): array
     {
         if (null === $start && null === $end) {
@@ -46,6 +41,11 @@ class ConferenceRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function listAll(): array
+    {
+        return $this->findAll();
     }
 
     //    /**

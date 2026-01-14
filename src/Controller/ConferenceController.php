@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Conference;
-use App\Repository\ConferenceRepository;
+use App\Repository\ConferenceRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,9 +46,9 @@ class ConferenceController extends AbstractController
         name: 'app_conference_list',
         methods: ['GET'],
     )]
-    public function list(ConferenceRepository $conferenceRepository): Response
+    public function list(ConferenceRepositoryInterface $conferenceRepository): Response
     {
-        $conferences = $conferenceRepository->findAll();
+        $conferences = $conferenceRepository->listAll();
 
         $result = array_map(static function (Conference $conference): array {
             return [
