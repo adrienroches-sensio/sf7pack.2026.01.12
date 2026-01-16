@@ -31,6 +31,8 @@ class ConferenceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // dispatch event
+            //   can prevent persist in database
             $entityManager->persist($conference);
             $entityManager->flush();
 
